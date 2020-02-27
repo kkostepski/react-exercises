@@ -1,10 +1,22 @@
-import React from 'react';
+import React from "react";
+import { createStore, combineReducers } from "redux";
+import { Provider } from "react-redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 
-import ContactForm from './ContactForm'
+import ReduxCounter from "./ReduxCounter/ReduxCounter";
+import counterReducer from "./ReduxCounter/ReduxCounter.redux";
+
+const rootReducer = combineReducers({
+  counter: counterReducer
+});
+
+const store = createStore(rootReducer, undefined, composeWithDevTools());
 
 function App() {
   return (
-    <ContactForm />
+    <Provider store={store}>
+      <ReduxCounter />
+    </Provider>
   );
 }
 
