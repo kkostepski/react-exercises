@@ -34,7 +34,7 @@ const ContactForm = () => {
       setValidationErrors(errors);
     } else {
       setIsFormSent(true);
-      setValidationErrors(null);
+      setValidationErrors([]);
       setName("");
       setEmail("");
       setContent("");
