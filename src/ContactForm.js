@@ -9,7 +9,7 @@ const ContactForm = () => {
     if (name.length < 2) {
       errors.push({
         field: "name",
-        message: "Pole imię musi zawierać co najmniej 2 znaki"
+        message: "This field should contain at least 2 characters"
       });
     }
 
@@ -17,86 +17,104 @@ const ContactForm = () => {
     if (email.replace("@", "").length < 3 || !email.includes("@")) {
       errors.push({
         field: "email",
-        message: "Pole email musi zawierać znak @ i co najmniej 3 znaki"
+        message:
+          "This field should contain @ character and at least 3 characters"
       });
     }
 
     if (!content.length) {
       errors.push({
         field: "content",
-        message: "Pole wiadomość musi zostać uzupełnione"
+        message: "This field cannot be empty"
       });
     }
 
     if (errors.length) {
+      setIsFormSent(false);
       setValidationErrors(errors);
     } else {
+      setIsFormSent(true);
       setValidationErrors(null);
-
-      // TODO: SEND FORM
+      setName("");
+      setEmail("");
+      setContent("");
     }
   };
 
-  const [validationErrors, setValidationErrors] = useState(null);
+  const [validationErrors, setValidationErrors] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
+  const [isFormSent, setIsFormSent] = useState(false);
 
   return (
     <div>
-      <h1>Formularz</h1>
+      <h1>Contact Form</h1>
 
-      {validationErrors && (
-        <ValidationError errors={validationErrors}></ValidationError>
+      {isFormSent && (
+        <div
+          style={{
+            backgroundColor: "#a5fcc5",
+            border: "1px solid #59b566",
+            borderRadius: 5
+          }}
+        >
+          Thank you! The form has been sent.
+        </div>
       )}
 
       <form noValidate onSubmit={handleSubmit}>
-        <label>
-          Imię:
-          <input
-            class="form-control"
-            type="text"
-            name="name"
-            onChange={event => setName(event.target.value)}
-            value={name}
-          />
-        </label>
+        <div>
+          <label>
+            <div>Name:</div>
+            <input
+              className="form-control"
+              type="text"
+              name="name"
+              onChange={event => setName(event.target.value)}
+              value={name}
+            />
+            <ValidationError errors={validationErrors} fieldName="name" />
+          </label>
+        </div>
 
-        <label>
-          Email:
-          <input
-            class="form-control"
-            type="email"
-            name="email"
-            onChange={event => setEmail(event.target.value)}
-            value={email}
-          />
-        </label>
-
-        <label>
-          Treść wiadomości:
-          <textarea
-            class="form-control"
-            name="content"
-            onChange={event => setContent(event.target.value)}
-            value={content}
-          ></textarea>
-        </label>
-
-        <button class="btn btn-primary" type="submit">
-          Wyślij
+        <div>
+          <label>
+            <div>Email:</div>
+            <input
+              className="form-control"
+              type="email"
+              name="email"
+              onChange={event => setEmail(event.target.value)}
+              value={email}
+            />
+          </label>
+          <ValidationError errors={validationErrors} fieldName="email" />
+        </div>
+        <div>
+          <label>
+            <div>Message content:</div>
+            <textarea
+              className="form-control"
+              name="content"
+              onChange={event => setContent(event.target.value)}
+              value={content}
+            ></textarea>
+          </label>
+          <ValidationError errors={validationErrors} fieldName="content" />
+        </div>
+        <button className="btn btn-primary" type="submit">
+          Send
         </button>
       </form>
     </div>
   );
 };
 
-const ValidationError = ({ errors }) => (
-  <div>
-    {errors.map(error => (
-      <div style={{ color: "#ff0000" }}>{error.message}</div>
-    ))}
-  </div>
-);
+const ValidationError = ({ errors, fieldName }) => {
+  const error = errors.find(error => error.field === fieldName);
+
+  return error ? <div style={{ color: "#ff0000" }}>{error.message}</div> : null;
+};
 
 export default ContactForm;
