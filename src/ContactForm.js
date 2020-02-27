@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const ContactForm = () => {
   const handleSubmit = event => {
@@ -47,9 +47,19 @@ const ContactForm = () => {
   const [content, setContent] = useState("");
   const [isFormSent, setIsFormSent] = useState(false);
 
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/todos/1")
+      .then(response => response.json())
+      .then(json => setData(json));
+  }, []);
+
   return (
     <div>
       <h1>Contact Form</h1>
+      {console.log("data", data)}
+      {data && <pre>{JSON.stringify(data)}</pre>}
 
       {isFormSent && (
         <div
