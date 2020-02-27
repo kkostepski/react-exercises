@@ -58,7 +58,6 @@ const ContactForm = () => {
   return (
     <div>
       <h1>Contact Form</h1>
-      {console.log("data", data)}
       {data && <pre>{JSON.stringify(data)}</pre>}
 
       {isFormSent && (
