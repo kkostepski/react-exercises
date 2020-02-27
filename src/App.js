@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { createContext } from "react";
 
-import ContactForm from './ContactForm'
+import ContactForm from "./ContactForm";
+
+export const StoreContext = createContext();
 
 function App() {
   return (
-    <ContactForm />
+    <StoreContext.Provider value={{ name: "Konrad" }}>
+      <ContactForm />
+    </StoreContext.Provider>
   );
 }
 

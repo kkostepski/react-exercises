@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { StoreContext } from "./App";
+
 const ContactForm = () => {
   const handleSubmit = event => {
     event.preventDefault();
@@ -86,7 +88,6 @@ const ContactForm = () => {
             <ValidationError errors={validationErrors} fieldName="name" />
           </label>
         </div>
-
         <div>
           <label>
             <div>Email:</div>
@@ -115,10 +116,21 @@ const ContactForm = () => {
         <button className="btn btn-primary" type="submit">
           Send
         </button>
+        <hr />
+        Component Reading Context:
+        <br />
+        
+        <ComponentReadingContext />
       </form>
     </div>
   );
 };
+
+const ComponentReadingContext = () => (
+  <StoreContext.Consumer>
+    {value => <pre>{JSON.stringify(value)}</pre>}
+  </StoreContext.Consumer>
+);
 
 const ValidationError = ({ errors, fieldName }) => {
   const error = errors.find(error => error.field === fieldName);
